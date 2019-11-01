@@ -27,7 +27,12 @@ namespace hr_app.Controllers
             return View(listvm);
         }
 
-   
+        public IActionResult Create()
+        {
+            
+            return View();
+        }
+
         public IActionResult Index()
         {
             return View();
