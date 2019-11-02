@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace hr_app.Models
 {
-    public class Company
+    public class CompanyModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
