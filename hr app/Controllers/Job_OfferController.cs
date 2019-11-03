@@ -18,11 +18,11 @@ namespace hr_app.Controllers
 
         public IActionResult Job_offers()
         {
-            List<Job_OfferModel> list = _context.job_Offers;
-            List<Job_OfferViewModel> listvm = new List<Job_OfferViewModel>();
+            List<Job_Offer> list = _context.job_Offers;
+            List<Job_OfferIndexViewModel> listvm = new List<Job_OfferIndexViewModel>();
             foreach (var el in list)
             {
-                listvm.Add(new Job_OfferViewModel(el));
+                listvm.Add(new Job_OfferIndexViewModel(el));
             }
             return View(listvm);
         }
@@ -31,6 +31,12 @@ namespace hr_app.Controllers
         {
             
             return View();
+        }
+
+        public IActionResult Details()
+        {
+
+            return View(_context.job_Offers.First());
         }
 
         public IActionResult Index()
