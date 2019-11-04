@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using hr_app.EntityFramework;
 
 namespace hr_app
 {
@@ -31,6 +33,8 @@ namespace hr_app
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            var connection = Configuration["DatabaseConnectionString"];
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
