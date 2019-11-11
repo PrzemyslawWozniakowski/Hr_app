@@ -50,6 +50,28 @@ namespace hr_app.Utilities
             return ValidationResult.Success;
         }
     }
+
+
+    [AttributeUsage(AttributeTargets.Property)]
+    public class EmailCorrectAttribute : ValidationAttribute
+    {
+
+
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var model = validationContext.ObjectInstance as JobOffer;
+
+            if (model != null)
+            {
+                if (model.SalaryFrom > model.SalaryTo)
+                {
+                    return new ValidationResult(string.Empty);
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+    }
 }
 
 
