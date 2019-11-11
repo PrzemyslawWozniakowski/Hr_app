@@ -12,12 +12,7 @@ namespace hr_app.Controllers
     [Route("[controller]/[action]")]
     public class JobOfferController : Controller
     {
-        //private readonly JobOfferContext _context;
-
-        //public JobOfferController()
-        //{
-        //    _context = new JobOfferContext();
-        //}
+        
 
         private readonly DataContext _context;
 
@@ -26,20 +21,133 @@ namespace hr_app.Controllers
             _context = context;
         }
 
+        public IActionResult CreateJobApplication(int ?id)
+        {
+            if(id==null)
+            {
+                return BadRequest($"id shouldn't not be null");
+            }
+            var model = new JobApplicationCreateView
+            {
+                Id = 0,
+                JobOfferId = id.Value
+            };
+            return View(model);
+        }
+        //
+        // GET: api/Users
+        //[HttpGet]
+        //public PagingViewModel GetUsers(int pageNo = 1, int pageSize = 4)
+        //{
+        //    int totalPage, totalRecord;
+
+        //    totalRecord = _context.JobOffers.Count();
+        //    totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
+        //    var record = (from u in _context.JobOffers
+        //                  orderby u.JobTitle, u.Created
+        //                  select u).Skip((pageNo - 1) * pageSize).Take(pageSize).ToList();
+
+        //    PagingViewModel empData = new PagingViewModel
+        //    {
+        //        JobOffers = record,
+        //        TotalPage = totalPage
+        //    };
+
+        //    return empData;
+        //}
+        ////
+        //// GET: api/Users/5
+        //[HttpGet("{id}")]
+        //public async Task<IActionResult> GetUser([FromRoute] int id)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var user = await _context.JobOffers.FindAsync(id);
+
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(user);
+        //}
+        //
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateJobApplication(JobApplicationCreateView model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            JobApplication ja = new JobApplication
+            {
+                JobOfferId = model.JobOfferId,
+                FirstName=model.FirstName,
+                LastName=model.LastName,
+                PhoneNumber=model.PhoneNumber,
+                EmailAddress=model.EmailAddress,
+                ContactAgreement=model.ContactAgreement,
+                CvUrl=model.CvUrl,
+            
+            };
+            // correct to use view model
+
+            await _context.JobApplications.AddAsync(ja);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult Create_Company()
+        {
+
+            var model = new CompanyCreateView {  };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create_Company(CompanyCreateView model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            Company ca = new Company
+            {
+                Name=model.Name
+
+            };
+
+            await _context.Companies.AddAsync(ca);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery(Name = "search")] string searchString)
         {
+            List<JobOffer> searchResult;
             if (string.IsNullOrEmpty(searchString))
-                return View(await _context.JobOffers.Include(x => x.Company).ToListAsync());
+               searchResult = await _context.JobOffers.Include(x => x.Company).ToListAsync();
+            else
+               searchResult = await _context.JobOffers.Include(x => x.Company).Where(o => o.JobTitle.Contains(searchString)).ToListAsync();
 
-            List<JobOffer> searchResult = await _context.JobOffers.Include(x => x.Company).Where(o => o.JobTitle.Contains(searchString)).ToListAsync();
-            List<JobOfferIndexView> result = new List<JobOfferIndexView>();
-            //foreach(var el in searchResult)
-            //{
-            //    result.Add(new JobOfferIndexView(el));
-            //}
-            return View(searchResult);
+            List<JobOfferIndexView> finalResult = new List<JobOfferIndexView>();
+            foreach(var el in searchResult)
+            {
+                JobOfferIndexView jo = new JobOfferIndexView(el);
+                finalResult.Add(jo);
+            }
+            return View(finalResult);
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -53,13 +161,14 @@ namespace hr_app.Controllers
             {
                 return NotFound($"offer not found in DB");
             }
+            JobOfferEditView jo = new JobOfferEditView(offer);
 
-            return View(offer);
+            return View(jo);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(JobOffer model)
+        public async Task<ActionResult> Edit(JobOfferEditView model)
         {
             if (!ModelState.IsValid)
             {
@@ -122,10 +231,12 @@ namespace hr_app.Controllers
             return RedirectToAction("Index");
         }
 
+
         public async Task<IActionResult> Details(int id)
         {
             var offer = await _context.JobOffers.Include(x => x.Company).FirstOrDefaultAsync(x => x.Id == id);
-            return View(offer);
+            JobOfferDetailsView returnoffer = new JobOfferDetailsView(offer);
+            return View(returnoffer);
         }
     }
 }

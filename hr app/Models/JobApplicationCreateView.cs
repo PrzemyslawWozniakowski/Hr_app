@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace hr_app.Models
 {
-    public class JobApplication
+    public class JobApplicationCreateView
     {
+      
         public int Id { get; set; }
         public int JobOfferId { get; set; }
         public string FirstName { get; set; }
@@ -15,6 +16,5 @@ namespace hr_app.Models
         public string EmailAddress { get; set; }
         public bool ContactAgreement { get; set; }
         public string CvUrl { get; set; }
-
     }
 }
