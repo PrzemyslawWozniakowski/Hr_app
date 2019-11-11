@@ -46,11 +46,9 @@ namespace hr_app.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<int?>("JobOfferId");
+                    b.Property<int>("JobOfferId");
 
                     b.Property<string>("LastName");
-
-                    b.Property<int>("OfferId");
 
                     b.Property<string>("PhoneNumber");
 
@@ -96,7 +94,8 @@ namespace hr_app.Migrations
                 {
                     b.HasOne("hr_app.Models.JobOffer")
                         .WithMany("JobApplications")
-                        .HasForeignKey("JobOfferId");
+                        .HasForeignKey("JobOfferId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("hr_app.Models.JobOffer", b =>

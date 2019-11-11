@@ -10,8 +10,8 @@ using hr_app.EntityFramework;
 namespace hr_app.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20191103172525_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20191106211528_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,11 +48,9 @@ namespace hr_app.Migrations
 
                     b.Property<string>("FirstName");
 
-                    b.Property<int?>("JobOfferId");
+                    b.Property<int>("JobOfferId");
 
                     b.Property<string>("LastName");
-
-                    b.Property<int>("OfferId");
 
                     b.Property<string>("PhoneNumber");
 
@@ -98,7 +96,8 @@ namespace hr_app.Migrations
                 {
                     b.HasOne("hr_app.Models.JobOffer")
                         .WithMany("JobApplications")
-                        .HasForeignKey("JobOfferId");
+                        .HasForeignKey("JobOfferId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("hr_app.Models.JobOffer", b =>

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace hr_app.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -53,14 +53,13 @@ namespace hr_app.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    OfferId = table.Column<int>(nullable: false),
+                    JobOfferId = table.Column<int>(nullable: false),
                     FirstName = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     EmailAddress = table.Column<string>(nullable: true),
                     ContactAgreement = table.Column<bool>(nullable: false),
-                    CvUrl = table.Column<string>(nullable: true),
-                    JobOfferId = table.Column<int>(nullable: true)
+                    CvUrl = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -70,7 +69,7 @@ namespace hr_app.Migrations
                         column: x => x.JobOfferId,
                         principalTable: "JobOffers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
