@@ -32,6 +32,5 @@ namespace hr_app.Models
         public DateTime? ValidUntil { get; set; }
         public List<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
 
-
     }
 }

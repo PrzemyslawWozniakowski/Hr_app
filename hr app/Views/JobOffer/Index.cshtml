@@ -1,4 +1,4 @@
-﻿@model IEnumerable<hr_app.Models.JobOffer>
+﻿@model IEnumerable<hr_app.Models.JobOfferIndexView>
 
 @{
     ViewData["Title"] = "Index";
@@ -9,7 +9,7 @@
 
 <div class="row page-box">
     <div class="col-sm-12">
-        <h2>Job Offer list</h2>
+        @*<h2>Job Offer list</h2>*@
 
         @using (Html.BeginForm("Index", "JobOffer", FormMethod.Get))
         {
@@ -40,6 +40,7 @@
                         <td>@offer.Company.Name</td>
                         <td>@offer.Location</td>
                         <td>@offer.Created</td>
+                        <td>@Html.ActionLink("Applicate", "CreateJobApplication", new { id = offer.Id })</td>
                     </tr>
                 }
             </tbody>
