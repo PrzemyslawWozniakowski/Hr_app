@@ -10,7 +10,12 @@ namespace hr_app.Controllers
 {
     public class HomeController : Controller
     {
-     
+
+        public IActionResult Index1()
+        {
+            return View();
+        }
+
 
         public IActionResult Index()
         {
