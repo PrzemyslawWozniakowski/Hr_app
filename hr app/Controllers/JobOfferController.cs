@@ -34,47 +34,7 @@ namespace hr_app.Controllers
             };
             return View(model);
         }
-        //
-        // GET: api/Users
-        //[HttpGet]
-        //public PagingViewModel GetUsers(int pageNo = 1, int pageSize = 4)
-        //{
-        //    int totalPage, totalRecord;
-
-        //    totalRecord = _context.JobOffers.Count();
-        //    totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
-        //    var record = (from u in _context.JobOffers
-        //                  orderby u.JobTitle, u.Created
-        //                  select u).Skip((pageNo - 1) * pageSize).Take(pageSize).ToList();
-
-        //    PagingViewModel empData = new PagingViewModel
-        //    {
-        //        JobOffers = record,
-        //        TotalPage = totalPage
-        //    };
-
-        //    return empData;
-        //}
-        ////
-        //// GET: api/Users/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetUser([FromRoute] int id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var user = await _context.JobOffers.FindAsync(id);
-
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(user);
-        //}
-        //
+       
 
         [HttpPost]
         [ValidateAntiForgeryToken]
