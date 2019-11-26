@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using hr_app.Models;
 using hr_app.EntityFramework;
+using Microsoft.Extensions.Configuration;
 
 namespace hr_app.Controllers
 {
@@ -16,9 +17,10 @@ namespace hr_app.Controllers
 
         private readonly DataContext _context;
 
-        public JobOfferController(DataContext context)
+        public JobOfferController(DataContext context, IConfiguration configuration)
         {
             _context = context;
+            
         }
 
         public IActionResult CreateJobApplication(int ?id)
@@ -45,21 +47,21 @@ namespace hr_app.Controllers
                 return View(model);
             }
 
-            JobApplication ja = new JobApplication
-            {
-                JobOfferId = model.JobOfferId,
-                FirstName=model.FirstName,
-                LastName=model.LastName,
-                PhoneNumber=model.PhoneNumber,
-                EmailAddress=model.EmailAddress,
-                ContactAgreement=model.ContactAgreement,
-                CvUrl=model.CvUrl,
+            //JobApplication ja = new JobApplication
+            //{
+            //    JobOfferId = model.JobOfferId,
+            //    FirstName=model.FirstName,
+            //    LastName=model.LastName,
+            //    PhoneNumber=model.PhoneNumber,
+            //    EmailAddress=model.EmailAddress,
+            //    ContactAgreement=model.ContactAgreement,
+            //    CvUrl=model.CvUrl,
             
-            };
-            // correct to use view model
+            //};
+            //// correct to use view model
 
-            await _context.JobApplications.AddAsync(ja);
-            await _context.SaveChangesAsync();
+            //await _context.JobApplications.AddAsync(ja);
+            //await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
