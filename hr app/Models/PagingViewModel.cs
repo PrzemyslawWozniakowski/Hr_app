@@ -7,7 +7,7 @@ namespace hr_app.Models
 {
     public class PagingViewModel
     {
-        public IEnumerable<JobOffer> JobOffers { get; set; }
+        public IEnumerable<JobOfferIndexView> JobOffers { get; set; }
         public int TotalPage { get; set; }
     }
 }

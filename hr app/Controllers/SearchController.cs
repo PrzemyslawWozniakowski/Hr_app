@@ -2,13 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-
-using hr_app.EntityFramework;
 using hr_app.Models;
+using hr_app.EntityFramework;
 
 namespace hr_app.Controllers
 {
@@ -23,40 +20,31 @@ namespace hr_app.Controllers
             _context = context;
         }
 
-        // GET: api/Users
         [HttpGet]
-        public SearchViewModel GetJobTitles()
+        public PagingViewModel GetJobOffers(string sstr="", int pageNo = 1, int pageSize = 4)
         {
-            var offers = _context.JobOffers.ToList();
-            //var a = offers.GroupBy(o => o.JobTitle);
-            //var b = offers.GroupBy(o => o.JobTitle).Select(g => g.First());
-            var offer_dist = offers.GroupBy(o => o.JobTitle).Select(g => g.First()).Select(o=>o.JobTitle);
-            var ss = offer_dist.ToArray();
+            List<JobOfferIndexView> list = new List<JobOfferIndexView>();
+            int totalPage, totalRecord;
 
-            SearchViewModel data = new SearchViewModel
+            totalRecord = _context.JobOffers.Count();
+            totalPage = (totalRecord / pageSize) + ((totalRecord % pageSize) > 0 ? 1 : 0);
+            var record = (from u in _context.JobOffers
+                          where u.JobTitle.Contains(sstr)
+                          orderby u.JobTitle, u.Created
+                          select u).Skip((pageNo - 1) * pageSize).Take(pageSize).ToList();
+
+          foreach(var el in record)
             {
-                JobTitles = ss
-            };
-            return data;
+                list.Add(new JobOfferIndexView(el));
+            }
+
+          PagingViewModel ret = new PagingViewModel
+          {
+              JobOffers = list,
+              TotalPage = totalPage
+          };
+
+            return ret;
         }
-
-        //// GET: api/Users/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetJobOffer([FromRoute] int id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
-
-        //    var user = await _context.JobOffers.FindAsync(id);
-
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(user);
-        //}
     }
 }
