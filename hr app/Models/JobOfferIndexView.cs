@@ -12,11 +12,13 @@ namespace hr_app.Models
             Company = offer.Company;
             Location = offer.Location;
             Created = offer.Created;
+            ValidUntil = offer.ValidUntil;
         }
         public int Id { get; set; }
         public string JobTitle { get; set; }
         public Company Company{ get; set; }
         public string Location { get; set; }
         public DateTime Created { get; set; }
+        public DateTime? ValidUntil { get; set; }
     }
 }
