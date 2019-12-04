@@ -23,7 +23,7 @@ namespace hr_app.Controllers
             _context = context;
         }
 
-        // GET: api/Users
+        // GET: api/offers
         [HttpGet]
         public PagingViewModel GetJobOffers(int pageNo = 1, int pageSize = 4)
         {
@@ -34,17 +34,21 @@ namespace hr_app.Controllers
             var record = (from u in _context.JobOffers
                           orderby u.JobTitle, u.Created
                           select u).Skip((pageNo - 1) * pageSize).Take(pageSize).ToList();
-
+            List<JobOfferIndexView> rec = new List<JobOfferIndexView>();
+            foreach(var el in record)
+            {
+                rec.Add(new JobOfferIndexView(el));
+            }
             PagingViewModel data = new PagingViewModel
             {
-                JobOffers = record,
+                JobOffers = rec,
                 TotalPage = totalPage
             };
 
             return data;
         }
 
-        // GET: api/Users/5
+        // GET: api/offers/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetJobOffer([FromRoute] int id)
         {
@@ -63,4 +67,5 @@ namespace hr_app.Controllers
             return Ok(user);
         }
     }
+
 }

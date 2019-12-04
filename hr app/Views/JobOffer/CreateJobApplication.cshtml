@@ -10,9 +10,8 @@
 
 <div class="row page-box">
     <div class="col-sm-12">
-        <h2>Now Job Offer</h2>
-        @using (Html.BeginForm("Create"))
-        {
+        <h2>New Job Offer</h2>
+        <form action="/JobOffer/CreateJobApplication?Length=6  "method="post"  enctype="multipart/form-data">
             @Html.AntiForgeryToken()
 
 
@@ -55,6 +54,6 @@
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Create</button>
             </div>
-        }
+        </form>
     </div>
 </div>

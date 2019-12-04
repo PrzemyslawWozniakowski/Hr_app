@@ -26,14 +26,16 @@ namespace hr_app.BlobStorage
 
         public void AddToStorage(JobApplication application, IFormFile CV)
         {
-            string fileName = "cv" + application.Id.ToString();
-            string connectionString = _configuration.GetConnectionString("AzureBlob");
+            string fileName = "cv" + application.FirstName.ToString() + application.LastName.ToString() + application.JobOfferId.ToString();
+            string connectionString = _configuration["AzureBlob"];
             BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
             var section = _configuration.GetSection("Azure");
             string containerName = section.GetValue<string>("ContainerName");
             BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
             BlobClient blobClient = containerClient.GetBlobClient(fileName);
             blobClient.Upload(CV.OpenReadStream());
+
+            application.CvUrl= blobClient.Uri.ToString();
         }
     }  
 }  

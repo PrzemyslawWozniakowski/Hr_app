@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using hr_app.Models;
 using hr_app.EntityFramework;
 using Microsoft.Extensions.Configuration;
+using hr_app.BlobStorage;
 
 namespace hr_app.Controllers
 {
@@ -16,10 +17,12 @@ namespace hr_app.Controllers
         
 
         private readonly DataContext _context;
+        private readonly BlobStorageService _storage;
 
         public JobOfferController(DataContext context, IConfiguration configuration)
         {
             _context = context;
+            _storage = new BlobStorageService(context, configuration);
             
         }
 
@@ -47,21 +50,21 @@ namespace hr_app.Controllers
                 return View(model);
             }
 
-            //JobApplication ja = new JobApplication
-            //{
-            //    JobOfferId = model.JobOfferId,
-            //    FirstName=model.FirstName,
-            //    LastName=model.LastName,
-            //    PhoneNumber=model.PhoneNumber,
-            //    EmailAddress=model.EmailAddress,
-            //    ContactAgreement=model.ContactAgreement,
-            //    CvUrl=model.CvUrl,
-            
-            //};
-            //// correct to use view model
+            JobApplication ja = new JobApplication
+            {
+                JobOfferId = model.JobOfferId,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber,
+                EmailAddress = model.EmailAddress,
+                ContactAgreement = model.ContactAgreement,
 
-            //await _context.JobApplications.AddAsync(ja);
-            //await _context.SaveChangesAsync();
+            };
+            //// correct to use view model
+            _storage.AddToStorage(ja,model.FormFile);
+
+            await _context.JobApplications.AddAsync(ja);
+            await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -124,7 +127,7 @@ namespace hr_app.Controllers
                 return NotFound($"offer not found in DB");
             }
             JobOfferEditView jo = new JobOfferEditView(offer);
-
+            // nie edytować już edytowanych
             return View(jo);
         }
 
@@ -188,8 +191,8 @@ namespace hr_app.Controllers
                 Created = DateTime.Now
             };
 
-            await _context.JobOffers.AddAsync(jo);
-            await _context.SaveChangesAsync();
+            await _context.JobOffers.AddAsync(jo).ConfigureAwait(false);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
             return RedirectToAction("Index");
         }
 
