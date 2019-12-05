@@ -37,6 +37,17 @@ namespace hr_app.BlobStorage
 
             application.CvUrl= blobClient.Uri.ToString();
         }
+
+        public void deleteFromStorage(JobApplication application)
+        {
+            string fileName = "cv" + application.FirstName.ToString() + application.LastName.ToString() + application.JobOfferId.ToString();
+            string connectionString = _configuration["AzureBlob"];
+            BlobServiceClient blobServiceClient = new BlobServiceClient(connectionString);
+            var section = _configuration.GetSection("Azure");
+            string containerName = section.GetValue<string>("ContainerName");
+            BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            containerClient.DeleteBlobIfExists(fileName);
+        }
     }  
 }  
 
