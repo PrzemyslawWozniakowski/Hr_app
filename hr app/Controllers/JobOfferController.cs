@@ -14,8 +14,6 @@ namespace hr_app.Controllers
     [Route("[controller]/[action]")]
     public class JobOfferController : Controller
     {
-        
-
         private readonly DataContext _context;
         private readonly BlobStorageService _storage;
 
@@ -169,32 +167,30 @@ namespace hr_app.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(JobOfferCreateView model)
-        {
-            if (!ModelState.IsValid)
-            {
-                model.Companies = await _context.Companies.ToListAsync();
-                return View(model);
-            }
 
-            JobOffer jo = new JobOffer
-            {
-                CompanyId = model.CompanyId,
-                Description = model.Description,
-                JobTitle = model.JobTitle,
-                Location = model.Location,
-                SalaryFrom = model.SalaryFrom,
-                SalaryTo = model.SalaryTo,
-                ValidUntil = model.ValidUntil,
-                Created = DateTime.Now
-            };
+        //[Route("JobOffer/Add")]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Add(int mCompanyId/*, string mDescription, string mJobTitle, string mLocation, decimal? mSalaryFrom, decimal? mSalaryTo, DateTime mValidUntil*/)
+        //{
 
-            await _context.JobOffers.AddAsync(jo).ConfigureAwait(false);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
-            return RedirectToAction("Index");
-        }
+        //    JobOffer jo = new JobOffer
+        //    {
+        //        CompanyId = mCompanyId,
+        //        Description = "Lorem ipsum",
+        //        JobTitle = "Some job",
+        //        Location = "Somewhere",
+        //        SalaryFrom = (decimal)1000,
+        //        SalaryTo = (decimal)1001,
+        //        ValidUntil = new DateTime(2020, 1, 1),
+        //        Created = DateTime.Now
+        //    };
+
+        //    await _context.JobOffers.AddAsync(jo).ConfigureAwait(false);
+        //    await _context.SaveChangesAsync().ConfigureAwait(false);
+
+        //    return RedirectToAction("Index", "JobOffer");
+        //}
 
 
         public async Task<IActionResult> Details(int id)
