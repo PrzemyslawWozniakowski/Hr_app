@@ -27,8 +27,7 @@ namespace hr_app.Controllers
         public SearchViewModel GetJobTitles()
         {
             var offers = _context.JobOffers.ToList();
-            //var a = offers.GroupBy(o => o.JobTitle);
-            //var b = offers.GroupBy(o => o.JobTitle).Select(g => g.First());
+    
             var offer_dist = offers.GroupBy(o => o.JobTitle).Select(g => g.First()).Select(o=>o.JobTitle);
             var ss = offer_dist.ToArray();
 
