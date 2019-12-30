@@ -4,7 +4,12 @@
     ViewData["Title"] = "Create";
 }
 
-
+<head>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
 
 <div class="row page-box">
     <div class="col-sm-12">
@@ -14,7 +19,7 @@
             @Html.AntiForgeryToken()
             <div class="form-group">
                 @Html.LabelFor(m => m.JobTitle)
-                @Html.EditorFor(m => m.JobTitle, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.JobTitle, new { htmlAttributes = new { @class = "form-control", @id = "jobTitle" } })
                 @Html.ValidationMessageFor(m => m.JobTitle, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
@@ -22,19 +27,19 @@
 
                 @Html.DropDownListFor(m => m.CompanyId,
                     Model.Companies.Select(c => new SelectListItem {Text =c.Name, Value = c.Id.ToString() }),
-                    new { @class = "form-control" })
+                    new { @class = "form-control", @id = "companyId" })
                 @Html.ValidationMessageFor(m => m.CompanyId, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.Location)
-                @Html.EditorFor(m => m.Location, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(m => m.Location, new { htmlAttributes = new { @class = "form-control", @id = "location" } })
                 @Html.ValidationMessageFor(m => m.Location, "", new { @class = "text-danger" })
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.SalaryFrom, "Salary")
                 <div class="input-group">
                     <span class="input-group-addon">PLN</span>
-                    @Html.EditorFor(m => m.SalaryFrom, new { htmlAttributes = new { @class = "form-control", placeholder = "From" } })
+                    @Html.EditorFor(m => m.SalaryFrom, new { htmlAttributes = new { @class = "form-control", placeholder = "From", @id ="salaryFrom" } })
                     <span class="input-group-addon">.00</span>
                 </div>
                 @Html.ValidationMessageFor(m => m.SalaryFrom, "", new { @class = "text-danger" })
@@ -43,7 +48,7 @@
                 @Html.LabelFor(m => m.SalaryTo, "Salary")
                 <div class="input-group">
                     <span class="input-group-addon">PLN</span>
-                    @Html.EditorFor(m => m.SalaryTo, new { htmlAttributes = new { @class = "form-control", placeholder = "To" } })
+                    @Html.EditorFor(m => m.SalaryTo, new { htmlAttributes = new { @class = "form-control", placeholder = "To", @id = "salaryTo" } })
                     <span class="input-group-addon">.00</span>
                 </div>
                 @Html.ValidationMessageFor(m => m.SalaryTo, "", new { @class = "text-danger" })
@@ -51,7 +56,7 @@
             <div class="form-group">
                 @Html.LabelFor(m => m.ValidUntil)
                 <div class="input-group">
-                    @Html.EditorFor(m => m.ValidUntil, new { htmlAttributes = new { @class = "form-control", type = "Date" } })
+                    @Html.EditorFor(m => m.ValidUntil, new { htmlAttributes = new { @class = "form-control", type = "Date" , @id = "validUntil"} })
                     <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
@@ -60,13 +65,45 @@
             </div>
             <div class="form-group">
                 @Html.LabelFor(m => m.Description)
-                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Enter description" })
+                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", placeholder = "Enter description" , @id = "description"})
                 @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
             </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-primary">Create</button>
-            </div>
+
         }
+        <div>
+            <button onclick="create()">Create Job Offer</button>
+        </div>
     </div>
 </div>
 
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        function create() {
+            var cid = $('#companyId').val();
+            console.log(cid);
+            var jt = $('#jobTitle').val();
+            var loc = $('#location').val();
+            var desc = $('#description').val();
+            var sfrom = $('#salaryFrom').val();
+            var sto = $('#salaryTo').val();
+            var vunt = $('#validUntil').val();
+
+            console.log(jt);
+            console.log(loc);
+            console.log(desc);
+            console.log(sfrom);
+            console.log(sto);
+            console.log(vunt);
+            $.post('/api/AddOffer', { mCompanyId: cid, mDescription: desc, mJobTitle: jt, 
+                                      mLocation: loc, mSalaryFrom: sfrom, mSalaryTo: sto, mValidUntil: vunt },
+                function (returnedData) {
+                    alert('xD');
+                }).fail(function () {
+                    console.log("error");
+                });
+ 
+        }
+    </script>
+}
