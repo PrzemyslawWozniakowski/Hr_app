@@ -8,6 +8,7 @@ using hr_app.Models;
 using hr_app.EntityFramework;
 using Microsoft.Extensions.Configuration;
 using hr_app.BlobStorage;
+using Microsoft.AspNetCore.Authorization;
 
 namespace hr_app.Controllers
 {
@@ -23,7 +24,7 @@ namespace hr_app.Controllers
             _storage = new BlobStorageService(context, configuration);
             
         }
-
+        [Authorize]
         public IActionResult CreateJobApplication(int ?id)
         {
             if(id==null)
@@ -66,7 +67,7 @@ namespace hr_app.Controllers
             return RedirectToAction("Index");
         }
 
-
+        [Authorize]
         public IActionResult Create_Company()
         {
 
@@ -112,7 +113,7 @@ namespace hr_app.Controllers
             }
             return View(finalResult);
         }
-
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -156,7 +157,7 @@ namespace hr_app.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-
+        [Authorize]
         public async Task<ActionResult> Create()
         {
             var model = new JobOfferCreateView
@@ -192,7 +193,7 @@ namespace hr_app.Controllers
         //    return RedirectToAction("Index", "JobOffer");
         //}
 
-
+        [Authorize]
         public async Task<IActionResult> Details(int id)
         {
             var offer = await _context.JobOffers.Include(x => x.Company).FirstOrDefaultAsync(x => x.Id == id);

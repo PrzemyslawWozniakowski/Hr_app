@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hr_app", "hr app\hr_app.csproj", "{AF4549FC-3CD0-4CB7-995E-06E0876F213C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enums", "Enums\Enums.csproj", "{4D88E284-E95B-4A45-8684-0FF8BFE591E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{AF4549FC-3CD0-4CB7-995E-06E0876F213C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF4549FC-3CD0-4CB7-995E-06E0876F213C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF4549FC-3CD0-4CB7-995E-06E0876F213C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D88E284-E95B-4A45-8684-0FF8BFE591E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D88E284-E95B-4A45-8684-0FF8BFE591E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D88E284-E95B-4A45-8684-0FF8BFE591E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D88E284-E95B-4A45-8684-0FF8BFE591E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
