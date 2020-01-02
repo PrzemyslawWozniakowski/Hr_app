@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using hr_app.EntityFramework;
 
 namespace hr_app.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200102174456_updatedjoboffer")]
+    partial class updatedjoboffer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,8 +91,6 @@ namespace hr_app.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("JobOffers");
                 });
 
@@ -124,11 +124,6 @@ namespace hr_app.Migrations
                     b.HasOne("hr_app.Models.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("hr_app.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

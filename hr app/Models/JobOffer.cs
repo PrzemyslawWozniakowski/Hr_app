@@ -31,6 +31,8 @@ namespace hr_app.Models
         [DateCorrectRangeAttribute(ValidateValidUntil = true, ErrorMessage = "Valid until date should be after current date")]
         public DateTime? ValidUntil { get; set; }
         public List<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
+        public int UserId { get; set; }
+        public User User { get; set; }
 
     }
 }

@@ -130,7 +130,6 @@ namespace hr_app.WWW
                     {
                         var db = scope.ServiceProvider.GetRequiredService<DataContext>();
 
-                        var test = 1;
 
                         // when we exit the using block,
                         // the IServiceScope will dispose itself 
@@ -138,7 +137,7 @@ namespace hr_app.WWW
                     }
 
                     var claims = context.Principal.Identities.First().Claims;
-                    AUser au = new AUser();
+                    User au = new User();
                     var v = claims.FirstOrDefault(x => ClaimTypes.Email == x.Type || x.Type == "email" || x.Type == "emails");
                     var v1 = claims.FirstOrDefault(x => ClaimTypes.GivenName == x.Type);
                     var v2 = claims.FirstOrDefault(x => ClaimTypes.Surname == x.Type);
