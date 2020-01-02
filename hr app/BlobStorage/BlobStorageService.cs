@@ -9,7 +9,7 @@ using hr_app.EntityFramework;
 using hr_app.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
-
+ 
 namespace hr_app.BlobStorage
 {
      public  class BlobStorageService  
