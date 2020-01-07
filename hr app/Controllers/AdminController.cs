@@ -18,6 +18,11 @@ namespace hr_app.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Action that prints all job applications
+        /// </summary>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery(Name = "search")] string searchString)
         {

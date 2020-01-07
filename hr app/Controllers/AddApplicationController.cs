@@ -48,10 +48,14 @@ namespace hr_app.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Action for creating job applications
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "User")]
-        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> CreateJobApplication(JobApplicationCreateView model)
         {
             if (!ModelState.IsValid)
