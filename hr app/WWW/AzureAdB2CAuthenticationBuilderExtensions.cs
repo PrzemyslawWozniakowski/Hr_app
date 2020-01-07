@@ -130,34 +130,26 @@ namespace hr_app.WWW
                     {
                         var db = scope.ServiceProvider.GetRequiredService<DataContext>();
 
+                        string email = context.Principal.Identities.First().Claims.Where(x => x.Type == "emails").First().Value;
+                        
+                        var user = db.Users.Where(x => x.Email == email).FirstOrDefault();
 
-                        // when we exit the using block,
-                        // the IServiceScope will dispose itself 
-                        // and dispose all of the services that it resolved.
+                        if (user == null)
+                        {
+                            string firstName = context.Principal.Identities.First().Claims.Where(x => x.Type == ClaimTypes.GivenName).First().Value;
+
+                            db.Users.Add(new User() {Email = email, Role = Enums.Role.User, Name = firstName});
+                            db.SaveChanges();
+
+                            user = db.Users.Include(x => x.Role).Where(x => x.Email == email).FirstOrDefault();
+                        }
+
+                        context.Principal.Identities.First().AddClaim(new Claim(ClaimTypes.Role, user.Role.ToString()));
+                        context.Principal.Identities.First().AddClaim(new Claim(context.Principal.Identities.First().NameClaimType, user.Name));
+                        context.Principal.Identities.First().AddClaim(new Claim(ClaimTypes.Email, user.Email.ToString()));
+
                     }
 
-                    var claims = context.Principal.Identities.First().Claims;
-                    User au = new User();
-                    var v = claims.FirstOrDefault(x => ClaimTypes.Email == x.Type || x.Type == "email" || x.Type == "emails");
-                    var v1 = claims.FirstOrDefault(x => ClaimTypes.GivenName == x.Type);
-                    var v2 = claims.FirstOrDefault(x => ClaimTypes.Surname == x.Type);
-                    au.Email = v != null ? v.Value : "";
-                    
-                    //var first = _context.Users.Where(x => x.Email == au.Email).Include(i => i.Role).FirstOrDefault();
-
-
-
-                    //_context.Users.Select(x=>x).Include().FirstOrDefault(x => x.Email == au.Email);
-
-                    //if (first == null)
-                    {
-                        //au.Role = _context.Roles.First(x => x.RoleName == Roles.User.ToString());
-                        //_context.Users.Add(au);
-                        //_context.SaveChanges();
-                        //first = au;
-                    }
-                    context.Principal.Identities.First().AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-                    context.Principal.Identities.First().AddClaim(new Claim(context.Principal.Identities.First().NameClaimType, "Bob"));
                     var p = context.Principal.Identities.First();
                 }
 

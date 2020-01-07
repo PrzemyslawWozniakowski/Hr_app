@@ -25,7 +25,8 @@ namespace hr_app.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -42,15 +43,21 @@ namespace hr_app.Migrations
 
                     b.Property<string>("CvUrl");
 
-                    b.Property<string>("EmailAddress");
+                    b.Property<string>("EmailAddress")
+                        .IsRequired();
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
                     b.Property<int>("JobOfferId");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
-                    b.Property<string>("PhoneNumber");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired();
+
+                    b.Property<int>("State");
 
                     b.Property<int>("UserId");
 
@@ -77,11 +84,14 @@ namespace hr_app.Migrations
                     b.Property<string>("JobTitle")
                         .IsRequired();
 
-                    b.Property<string>("Location");
+                    b.Property<string>("Location")
+                        .IsRequired();
 
-                    b.Property<decimal?>("SalaryFrom");
+                    b.Property<decimal?>("SalaryFrom")
+                        .IsRequired();
 
-                    b.Property<decimal?>("SalaryTo");
+                    b.Property<decimal?>("SalaryTo")
+                        .IsRequired();
 
                     b.Property<int>("UserId");
 

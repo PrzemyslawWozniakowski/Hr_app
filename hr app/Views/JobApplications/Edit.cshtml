@@ -1,4 +1,4 @@
-﻿@model JobApplicationCreateView
+﻿@model JobApplicationEditView
 
 
 @{
@@ -10,11 +10,11 @@
 
 <div class="row page-box">
     <div class="col-sm-12">
-        <h2>New Job Offer</h2>
-        <form action="/JobOffer/CreateJobApplication?Length=6  " method="post" enctype="multipart/form-data">
+        <h2>Edit Job Offer</h2>
+        <form action="/JobApplications/Edit" method="post" enctype="multipart/form-data">
             @Html.AntiForgeryToken()
 
-
+            <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="JobOfferId" />
 
             <div class="form-group">

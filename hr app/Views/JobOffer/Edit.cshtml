@@ -1,11 +1,11 @@
-﻿@model JobOfferEditView
+﻿@model JobOffer
 @{
     ViewBag.Title = "Edit";
 }
 <div class="row">
     <div class="col-sm-12">
         <h2>Edit Job Offer</h2>
-        @using (Html.BeginForm("Create"))
+        @using (Html.BeginForm("Edit"))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(m => m.Id)

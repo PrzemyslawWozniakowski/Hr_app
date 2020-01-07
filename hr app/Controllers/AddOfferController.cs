@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using hr_app.BlobStorage;
 using hr_app.EntityFramework;
 using hr_app.Models;
+using System.Security.Claims;
+using Microsoft.Identity.Client;
+using Microsoft.AspNetCore.Authorization;
 namespace hr_app.Controllers
 {
     [Route("api/[controller]")]
@@ -23,12 +26,15 @@ namespace hr_app.Controllers
 
 
         [HttpPost]
+        [Authorize (Roles ="HR")]
         public async Task<IActionResult> Add([FromForm] int mCompanyId, [FromForm] string mDescription, [FromForm] string mJobTitle,
             [FromForm] string mLocation, [FromForm] decimal? mSalaryFrom, [FromForm] decimal? mSalaryTo,[FromForm] DateTime mValidUntil)
         {
-
+            string email = User.FindFirst(x => x.Type.Equals(ClaimTypes.Email)).Value;
+            int? uid = _context.Users.Where(x => x.Email == email).First().Id;
             JobOffer jo = new JobOffer
             {
+                UserId = uid.Value,
                 CompanyId = mCompanyId,
                 Description = mDescription,
                 JobTitle = mJobTitle,

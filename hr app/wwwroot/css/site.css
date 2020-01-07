@@ -36,3 +36,15 @@ body {
     }
 }
 
+
+
+.border-md-right {
+    border-right: 1px solid silver;
+}
+
+@media (max-width: 768px) {
+
+    .border-md-right {
+        border-right: none;
+    }
+}

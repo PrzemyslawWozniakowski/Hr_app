@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using hr_app.Models;
 using hr_app.EntityFramework;
-
+using Microsoft.AspNetCore.Authorization;
 namespace hr_app.Controllers
 {
     [Route("api/[controller]")]
@@ -21,6 +21,7 @@ namespace hr_app.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public PagingViewModel GetJobOffers(string sstr="", int pageNo = 1, int pageSize = 4)
         {
             List<JobOfferIndexView> list = new List<JobOfferIndexView>();

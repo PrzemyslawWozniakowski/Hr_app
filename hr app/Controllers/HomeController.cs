@@ -10,8 +10,15 @@ namespace hr_app.Controllers
 {
     public class HomeController : Controller
     {
-        [Authorize]
-        public IActionResult Index1()
+        [Authorize (Roles = "User")]
+        public IActionResult IndexUser()
+        {       
+
+            return View();
+        }
+
+        [Authorize (Roles ="HR")]
+        public IActionResult IndexHR()
         {
             return View();
         }
