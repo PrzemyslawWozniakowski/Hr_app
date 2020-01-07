@@ -9,7 +9,9 @@ using hr_app.EntityFramework;
 using Microsoft.Extensions.Configuration;
 using hr_app.BlobStorage;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Security.Claims;
+using Microsoft.Identity.Client;
+using hr_app.Content;
 namespace hr_app.Controllers
 {
     [Route("[controller]/[action]")]
@@ -17,57 +19,18 @@ namespace hr_app.Controllers
     {
         private readonly DataContext _context;
         private readonly BlobStorageService _storage;
-
+        private readonly SendGridService _sendgrid;
         public JobOfferController(DataContext context, IConfiguration configuration)
         {
             _context = context;
             _storage = new BlobStorageService(context, configuration);
-            
-        }
-        [Authorize]
-        public IActionResult CreateJobApplication(int ?id)
-        {
-            if(id==null)
-            {
-                return BadRequest($"id shouldn't not be null");
-            }
-            var model = new JobApplicationCreateView
-            {
-                Id = 0,
-                JobOfferId = id.Value
-            };
-            return View(model);
+            _sendgrid = new SendGridService(context, configuration);
         }
        
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateJobApplication(JobApplicationCreateView model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            JobApplication ja = new JobApplication
-            {
-                JobOfferId = model.JobOfferId,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                PhoneNumber = model.PhoneNumber,
-                EmailAddress = model.EmailAddress,
-                ContactAgreement = model.ContactAgreement,
-
-            };
-            //// correct to use view model
-            _storage.AddToStorage(ja,model.FormFile);
-
-            await _context.JobApplications.AddAsync(ja);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
-
-        [Authorize]
+        
+        [Authorize(Roles = "Admin")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult Create_Company()
         {
 
@@ -77,6 +40,7 @@ namespace hr_app.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Create_Company(CompanyCreateView model)
         {
             if (!ModelState.IsValid)
@@ -97,6 +61,7 @@ namespace hr_app.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index([FromQuery(Name = "search")] string searchString)
         {
             List<JobOffer> searchResult;
@@ -113,7 +78,8 @@ namespace hr_app.Controllers
             }
             return View(finalResult);
         }
-        [Authorize]
+        [Authorize (Roles ="HR")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -125,14 +91,14 @@ namespace hr_app.Controllers
             {
                 return NotFound($"offer not found in DB");
             }
-            JobOfferEditView jo = new JobOfferEditView(offer);
-            // nie edytować już edytowanych
-            return View(jo);
+
+            return View(offer);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(JobOfferEditView model)
+        [Authorize(Roles = "HR")]
+        public async Task<ActionResult> Edit(JobOffer model)
         {
             if (!ModelState.IsValid)
             {
@@ -141,11 +107,17 @@ namespace hr_app.Controllers
 
             var offer = await _context.JobOffers.FirstOrDefaultAsync(x => x.Id == model.Id);
             offer.JobTitle = model.JobTitle;
+            offer.SalaryFrom = model.SalaryFrom;
+            offer.SalaryTo = model.SalaryTo;
+            offer.Location = model.Location;
+            offer.Description = model.Description;
+            offer.ValidUntil = model.ValidUntil;
             _context.Update(offer);
             await _context.SaveChangesAsync();
             return RedirectToAction("Details", new { id = model.Id });
         }
         [HttpPost]
+        [Authorize(Roles = "HR")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
@@ -157,7 +129,10 @@ namespace hr_app.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        [Authorize]
+
+
+        [Authorize(Roles = "HR")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult> Create()
         {
             var model = new JobOfferCreateView
@@ -169,31 +144,8 @@ namespace hr_app.Controllers
         }
 
 
-        //[Route("JobOffer/Add")]
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Add(int mCompanyId/*, string mDescription, string mJobTitle, string mLocation, decimal? mSalaryFrom, decimal? mSalaryTo, DateTime mValidUntil*/)
-        //{
-
-        //    JobOffer jo = new JobOffer
-        //    {
-        //        CompanyId = mCompanyId,
-        //        Description = "Lorem ipsum",
-        //        JobTitle = "Some job",
-        //        Location = "Somewhere",
-        //        SalaryFrom = (decimal)1000,
-        //        SalaryTo = (decimal)1001,
-        //        ValidUntil = new DateTime(2020, 1, 1),
-        //        Created = DateTime.Now
-        //    };
-
-        //    await _context.JobOffers.AddAsync(jo).ConfigureAwait(false);
-        //    await _context.SaveChangesAsync().ConfigureAwait(false);
-
-        //    return RedirectToAction("Index", "JobOffer");
-        //}
-
-        [Authorize]
+        [Authorize(Roles = "HR,User")]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> Details(int id)
         {
             var offer = await _context.JobOffers.Include(x => x.Company).FirstOrDefaultAsync(x => x.Id == id);

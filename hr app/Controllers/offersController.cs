@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Authorization;
 using hr_app.EntityFramework;
 using hr_app.Models;
 
@@ -25,6 +25,7 @@ namespace hr_app.Controllers
 
         // GET: api/offers
         [HttpGet]
+        [Authorize]
         public PagingViewModel GetJobOffers(int pageNo = 1, int pageSize = 4)
         {
             int totalPage, totalRecord;
@@ -50,6 +51,7 @@ namespace hr_app.Controllers
 
         // GET: api/offers/5
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetJobOffer([FromRoute] int id)
         {
             if (!ModelState.IsValid)

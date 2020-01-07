@@ -1,0 +1,75 @@
+﻿@model IEnumerable<hr_app.Models.JobOffer>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.JobTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Company)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalaryFrom)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalaryTo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValidUntil)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.JobTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SalaryFrom)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SalaryTo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValidUntil)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Id)
+            </td>
+            <td>
+                <a asp-controller="JobApplications" asp-action="Edit" asp-route-id="@item.Id">Application Edit</a> |
+                <a asp-controller="JobApplications" asp-action="Details" asp-route-id="@item.Id">Application Details</a> |
+                <a asp-controller="JobApplications" asp-action="Delete" asp-route-id="@item.Id">Application Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 using hr_app.EntityFramework;
 using hr_app.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace hr_app.Controllers
 {
@@ -24,6 +25,7 @@ namespace hr_app.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public SearchViewModel GetJobTitles()
         {
             var offers = _context.JobOffers.ToList();
@@ -38,23 +40,6 @@ namespace hr_app.Controllers
             return data;
         }
 
-        //// GET: api/Users/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetJobOffer([FromRoute] int id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
 
-        //    var user = await _context.JobOffers.FindAsync(id);
-
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return Ok(user);
-        //}
     }
 }

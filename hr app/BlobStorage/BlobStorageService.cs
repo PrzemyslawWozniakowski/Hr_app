@@ -9,7 +9,9 @@ using hr_app.EntityFramework;
 using hr_app.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Http;
- 
+using SendGrid;
+using SendGrid.Helpers.Mail;
+
 namespace hr_app.BlobStorage
 {
      public  class BlobStorageService  
@@ -34,8 +36,9 @@ namespace hr_app.BlobStorage
             BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
             BlobClient blobClient = containerClient.GetBlobClient(fileName);
             blobClient.Upload(CV.OpenReadStream());
-
             application.CvUrl= blobClient.Uri.ToString();
+
+           
         }
 
         public void deleteFromStorage(JobApplication application)

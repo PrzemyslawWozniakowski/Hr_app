@@ -31,10 +31,10 @@ namespace hr_app.WWW
 
             if (User.IsInRole("Admin"))
                 return RedirectToAction("Index", "Home");
-            //else if (User.IsInRole("HR"))
-            //    return RedirectToAction("Index", "HR");
-            //else if (User.IsInRole("User"))
-            //    return RedirectToAction("Index", "Application");
+            else if (User.IsInRole("HR"))
+                return RedirectToAction("Index", "Home");
+            else if (User.IsInRole("User"))
+                return RedirectToAction("Index", "User");
             else return SignOut();
         }
 

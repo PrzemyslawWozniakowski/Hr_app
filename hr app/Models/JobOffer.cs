@@ -15,12 +15,15 @@ namespace hr_app.Models
         public virtual Company Company { get; set; }
         public virtual int CompanyId { get; set; }
         [Display(Name = "Salary from")]
+        [Required]
         [SalaryCorrectRangeAttribute(ValidateSalaryFrom = true, ErrorMessage = "Salary from shouldn't be larger than Salary to")]
         public decimal? SalaryFrom { get; set; }
         [Display(Name = "Salary to")]
+        [Required]
         [SalaryCorrectRangeAttribute(ValidateSalaryTo = true, ErrorMessage = "Salary to shouldn't be smaller than Salary from")]
         public decimal? SalaryTo { get; set; }
         public DateTime Created { get; set; }
+        [Required]
         public string Location { get; set; }
         [Required]
         [MinLength(5)]
