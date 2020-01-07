@@ -7,7 +7,7 @@ namespace Enums
     public enum State
     {
         TBD = 0,
-        Denied =1,
-        Accepted =2
+        Denied = 1,
+        Accepted = 2
     }
 }

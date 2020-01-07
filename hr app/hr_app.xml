@@ -4,5 +4,48 @@
         <name>hr_app</name>
     </assembly>
     <members>
+        <member name="M:hr_app.Controllers.AddApplicationController.CreateJobApplication(hr_app.Models.JobApplicationCreateView)">
+            <summary>
+            Action for creating job applications
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:hr_app.Controllers.AddOfferController.Add(System.Int32,System.String,System.String,System.String,System.Nullable{System.Decimal},System.Nullable{System.Decimal},System.DateTime)">
+            <summary>
+            Action for creating offers
+            </summary>
+            <param name="mCompanyId"></param>
+            <param name="mDescription"></param>
+            <param name="mJobTitle"></param>
+            <param name="mLocation"></param>
+            <param name="mSalaryFrom"></param>
+            <param name="mSalaryTo"></param>
+            <param name="mValidUntil"></param>
+            <returns></returns>
+        </member>
+        <member name="M:hr_app.Controllers.AdminController.Index(System.String)">
+            <summary>
+            Action that prints all job applications
+            </summary>
+            <param name="searchString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:hr_app.Controllers.HRController.Index(System.String)">
+            <summary>
+            Action that shows all job applications for job offers managed by HR user
+            </summary>
+            <param name="searchString"></param>
+            <returns></returns>
+        </member>
+        <member name="M:hr_app.Controllers.SearchController.GetJobOffers(System.String,System.Int32,System.Int32)">
+            <summary>
+            Simple action that returns offers with job title matching some string
+            </summary>
+            <param name="sstr"></param>
+            <param name="pageNo"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
     </members>
 </doc>

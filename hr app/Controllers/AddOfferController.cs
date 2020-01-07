@@ -24,7 +24,17 @@ namespace hr_app.Controllers
 
         }
 
-
+        /// <summary>
+        /// Action for creating offers
+        /// </summary>
+        /// <param name="mCompanyId"></param>
+        /// <param name="mDescription"></param>
+        /// <param name="mJobTitle"></param>
+        /// <param name="mLocation"></param>
+        /// <param name="mSalaryFrom"></param>
+        /// <param name="mSalaryTo"></param>
+        /// <param name="mValidUntil"></param>
+        /// <returns></returns>
         [HttpPost]
         [Authorize (Roles ="HR")]
         public async Task<IActionResult> Add([FromForm] int mCompanyId, [FromForm] string mDescription, [FromForm] string mJobTitle,

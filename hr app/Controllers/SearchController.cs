@@ -20,6 +20,13 @@ namespace hr_app.Controllers
             _context = context;
         }
 
+        /// <summary>
+        /// Simple action that returns offers with job title matching some string
+        /// </summary>
+        /// <param name="sstr"></param>
+        /// <param name="pageNo"></param>
+        /// <param name="pageSize"></param>
+        /// <returns></returns>
         [HttpGet]
         [Authorize]
         public PagingViewModel GetJobOffers(string sstr="", int pageNo = 1, int pageSize = 4)

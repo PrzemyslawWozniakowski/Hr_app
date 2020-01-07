@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using hr_app.EntityFramework;
 
 namespace hr_app.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200107110233_hrdb66")]
+    partial class hrdb66
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,9 +125,7 @@ namespace hr_app.Migrations
                     b.ToTable("Users");
 
                     b.HasData(
-                        new { Id = 1, Email = "przemek-98@wp.pl", Name = "Przemek", Role = 0 },
-                        new { Id = 2, Email = "przemek.wozniakowskiwaw@gmail.com", Name = "przemek", Role = 1 },
-                        new { Id = 3, Email = "piroman916@gmail.com", Name = "przemek", Role = 2 }
+                        new { Id = 1, Email = "przemek-98@wp.pl", Name = "Przemek", Role = 0 }
                     );
                 });
 
