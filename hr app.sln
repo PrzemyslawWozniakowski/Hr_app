@@ -5,7 +5,9 @@ VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "hr_app", "hr app\hr_app.csproj", "{AF4549FC-3CD0-4CB7-995E-06E0876F213C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enums", "Enums\Enums.csproj", "{4D88E284-E95B-4A45-8684-0FF8BFE591E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enums", "Enums\Enums.csproj", "{4D88E284-E95B-4A45-8684-0FF8BFE591E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{13DE0AFE-C29D-4763-BF11-B790F00293DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4D88E284-E95B-4A45-8684-0FF8BFE591E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D88E284-E95B-4A45-8684-0FF8BFE591E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D88E284-E95B-4A45-8684-0FF8BFE591E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13DE0AFE-C29D-4763-BF11-B790F00293DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13DE0AFE-C29D-4763-BF11-B790F00293DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13DE0AFE-C29D-4763-BF11-B790F00293DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13DE0AFE-C29D-4763-BF11-B790F00293DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -98,7 +98,7 @@
             this.salaryTo = ko.observable(salary2);
             this.avgSalary = ko.pureComputed(function () {
 
-                var value = (this.salaryTo() + this.salaryFrom()) / 2;
+                var value = (parseInt(this.salaryTo()) + parseInt(this.salaryFrom())) / 2;
                 return value;
             }, this);
         };
