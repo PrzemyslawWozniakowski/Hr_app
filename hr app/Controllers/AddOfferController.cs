@@ -54,6 +54,7 @@ namespace hr_app.Controllers
                 ValidUntil = mValidUntil,
                 Created = DateTime.Now
             };
+            
 
             await _context.JobOffers.AddAsync(jo).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);
