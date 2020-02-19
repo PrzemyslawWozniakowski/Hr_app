@@ -1,0 +1,232 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<head>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<div id="main">
+    <div class="col-md-4">
+        <input type="number" id="pageS" value="4" min="4" max="50" />
+    </div>
+    <div class="col-md-2"></div>
+    <div class="col-md-6 ui-widget">
+
+        <label for="search" id="searchLabel">Search: </label>
+        <input id="search">
+        <button id="searchButton" onclick="searchData()">Search</button>
+    </div>
+</div>
+
+<div id="updatePanel">
+</div>
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        var currentPage = 1;
+        var jobtitles = [];
+        $(document).ready(function () {
+            fetchData(1);
+            fetchTitles();
+            $("#search").autocomplete({
+                source: jobtitles
+            });
+        });
+
+        $("input").change(function () {
+            fetchData(1);
+        });
+
+        function fetchTitles() {
+
+            $.ajax({
+                url: '/api/JobTitles',
+                type: 'GET',
+                data: {},
+                dataType: 'json',
+                success: function (data) {
+
+                    $.each(data.jobTitles, function (i, jo) {
+                        jobtitles.push(jo);
+                    });
+                },
+                error: function () {
+                    alert('Error! Please try again.');
+                }
+            }).done(function () {
+            });
+        }
+
+
+        function searchData() {
+            var pageSize = $('#pageS').val();
+            var str = $('#search').val();
+            var $loading = "<div class='loading'>Please wait...</div>";
+            $('#updatePanel').prepend($loading);
+            $.ajax({
+                url: '/api/Search',
+                type: 'GET',
+                data: { sstr: str, pageNo: 1, pageSize: pageSize },
+                dataType: 'json',
+                success: function (data) {
+                    var $table = $('<table />').addClass('table table-striped table-hover');
+                    var $header = $('<thead class="thead-dark" />').html('<tr><th>Job Id</th><th>Job Title</th><th>Valid until</th></tr>');
+                    $table.append($header);
+                    $.each(data.jobOffers, function (i, jo) {
+                        var $row = $('<tr />');
+                        $row.append($('<td />').html(jo.id));
+                        $row.append('<td><a href="/JobOffer/Details?id=' + jo.id + '">' + jo.jobTitle + '</a></td>');
+                        $row.append($('<td />').html(jo.validUntil));
+                        $row.append('<td><a href="/JobOffer/CreateJobApplication?id=' + jo.id + '"> Apply </a></td>');
+                        $table.append($row);
+                    });
+
+                    var totalPage = parseInt(data.totalPage);
+                    var $footer = $('<tr />');
+                    var $footerTD = $('<td />').attr('colspan', 4).addClass('footerContent');
+
+                    if (totalPage > 0) {
+                        for (var i = 1; i <= totalPage; i++) {
+                            var $page = $('<span />').addClass((i == currentPage) ? "current" : "");
+                            $page.html((i == currentPage) ? i : "<button onclick='fetchData(" + i + ");'>" + i + "</button>");
+                            $footerTD.append($page);
+                        }
+                        $footer.append($footerTD);
+                    }
+                    $table.append($footer);
+
+                    $('#updatePanel').html($table);
+                },
+                error: function () {
+                    alert('Error! Please try again.');
+                }
+            }).done(function () {
+
+                $loading.remove();
+            });
+        }
+
+        function fetchData(pageNo) {
+            var pageSize = $('#pageS').val();
+            currentPage = pageNo;
+            var $loading = "<div class='loading'>Please wait...</div>";
+            $('#updatePanel').prepend($loading);
+            $.ajax({
+                url: '/api/Offers',
+                type: 'GET',
+                data: { pageNo: pageNo, pageSize: pageSize },
+                dataType: 'json',
+                success: function (data) {
+                    var $table = $('<table />').addClass('table table-striped table-hover');
+                    var $header = $('<thead />').html('<tr><th>Job Id</th><th>Job Title</th><th>Valid until</th> <th></tr>');
+                    $table.append($header);
+                    $table.append('<tbody>');
+                    $.each(data.jobOffers, function (i, jo) {
+                        var $row = $('<tr />');
+                        $row.append($('<td />').html(jo.id));
+                        $row.append('<td><a href="/JobOffer/Details?id=' + jo.id + '">' + jo.jobTitle + '</a></td>');
+                        $row.append($('<td />').html(jo.validUntil.slice(0,10)));
+                        $row.append('<td><a href="/JobOffer/CreateJobApplication?id=' + jo.id + '"> Apply </a></td>');
+                        $table.append($row);
+                    });
+                    $table.append('</tbody>');
+                    var totalPage = parseInt(data.totalPage);
+                    var $footer = $('<tr />');
+                    var $footerTD = $('<td />').attr('colspan', 4).addClass('footerContent');
+
+                    if (totalPage > 0) {
+                        for (var i = 1; i <= totalPage; i++) {
+                            var $page = $('<span />').addClass((i == currentPage) ? "current" : "");
+                            $page.html((i == currentPage) ? i : "<button onclick='fetchData(" + i + ");'>" + i + "</button>");
+                            $footerTD.append($page);
+                        }
+                        $footer.append($footerTD);
+                    }
+                    $table.append($footer);
+
+                    $('#updatePanel').html($table);
+                },
+                error: function () {
+                    alert('Error! Please try again.');
+                }
+            }).done(function () {
+
+                $loading.remove();
+            });
+        }
+    </script>
+}
+
+<style>
+
+    #updatePanel {
+        width: 95%;
+        margin: 0 auto;
+        position: relative;
+    }
+
+
+
+    .loading {
+        float: left;
+        position: absolute;
+        margin-left: 40%;
+        width: 200px;
+        top: 100px;
+        padding: 3px;
+        border: 1px solid rgb(253, 0, 0);
+        background-color: rgb(245, 245, 78);
+        text-align: center;
+    }
+
+    #main {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    /*table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }*/
+
+    span.current {
+        cursor: auto !important;
+        background-color: #6E6E6E !important;
+        color: #ffffff;
+        font-weight: bold;
+        padding: 5px 10px;
+        border: 1px solid #000000;
+        margin-right: 4px;
+    }
+
+    td.footerContent span a {
+        display: inline-block;
+        padding: 3px 10px;
+        background-color: chartreuse;
+        margin-right: 4px;
+        border: 1px solid #998787;
+        cursor: pointer;
+    }
+
+    td.footerContent span a {
+        text-decoration: none;
+    }
+
+    td.footerContent {
+        text-align: right;
+    }
+</style>
